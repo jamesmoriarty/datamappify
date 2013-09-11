@@ -12,6 +12,11 @@ shared_examples_for "finders" do |data_provider|
       user_repository.save!(User.new(:last_name => 'Superman', :first_name => 'CC', :driver_license => 'NEWYORKCITY'))
     end
 
+    describe "issue #22" do
+      subject { "SuperUserRepository#{data_provider}".constantize.criteria(:where => { :id => 1 }, :match => { :first_name => "" }, :order => { :id => :desc }) }
+      its(:class) { should eq Array }
+    end
+
     [
       { :where => { :last_name => 'Superman' }, :limit => 2, :order => { :last_name => :asc, :first_name => :desc } },
       { :order => { :last_name => :asc, :first_name => :desc }, :limit => 2, :where => { :last_name => 'Superman' } },
